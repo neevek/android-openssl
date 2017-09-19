@@ -4,13 +4,13 @@
 declare -a ARCHITECTURES=("arm" "armv7a" "x86")
 
 # OpenSSL version to download if src is missing
-OPENSSL_VERSION="1.0.2j"
+OPENSSL_VERSION="1.0.2l"
 
 # Set acccording to your Android NDK
-ANDROID_PLATFORM="android-14"
+ANDROID_PLATFORM="android-19"
 
-ANDROID_ARM_TOOLCHAIN="arm-linux-androideabi-4.8"
-ANDROID_X86_TOOLCHAIN="x86-4.8"
+ANDROID_ARM_TOOLCHAIN="arm-linux-androideabi-4.9"
+ANDROID_X86_TOOLCHAIN="x86-4.9"
 
 ####################################################################################################
 ## Do not modify below this line unless you know what are you doing
@@ -107,8 +107,8 @@ function compileArmv7 () {
     export HOSTCC=gcc
     env
     PATH=$TOOLCHAIN_PATH:$PATH ./config shared no-ssl2 no-ssl3 no-comp no-hw
-    PATH=$TOOLCHAIN_PATH:$PATH make depend
-    PATH=$TOOLCHAIN_PATH:$PATH make
+    PATH=$TOOLCHAIN_PATH:$PATH make -j8 depend
+    PATH=$TOOLCHAIN_PATH:$PATH make -j8
 }
 
 ####################################################################################################
@@ -132,8 +132,8 @@ function compileArm () {
     export CFLAGS=" ${ARCH_FLAGS} -fpic -ffunction-sections -funwind-tables -fstack-protector -fno-strict-aliasing -finline-limit=64 "
     export LDFLAGS=" ${ARCH_LINK} "
     PATH=$TOOLCHAIN_PATH:$PATH ./Configure android shared no-ssl2 no-ssl3 no-comp no-hw
-    PATH=$TOOLCHAIN_PATH:$PATH make depend
-    PATH=$TOOLCHAIN_PATH:$PATH make
+    PATH=$TOOLCHAIN_PATH:$PATH make -j8 depend
+    PATH=$TOOLCHAIN_PATH:$PATH make -j8
 }
 
 
@@ -149,8 +149,8 @@ function compileX86 () {
     export ANDROID_DEV="$ANDROID_NDK/platforms/${ANDROID_PLATFORM}/${ANDROID_X86_ARCH}/usr"
     export HOSTCC=gcc
     PATH=$TOOLCHAIN_PATH:$PATH ./config shared no-ssl2 no-ssl3 no-comp no-hw
-    PATH=$TOOLCHAIN_PATH:$PATH make depend
-    PATH=$TOOLCHAIN_PATH:$PATH make
+    PATH=$TOOLCHAIN_PATH:$PATH make -j8 depend
+    PATH=$TOOLCHAIN_PATH:$PATH make -j8
 }
 
 ####################################################################################################
